@@ -18,13 +18,14 @@
     [dir count]))
 
 (defn generate-points [point command]
-  (into #{} (let [[dir count] (parse-direction command)
-                  [f axis] (case dir "R" [+ :x]
-                                     "L" [- :x]
-                                     "U" [+ :y]
-                                     "D" [- :y])]
-              (for [i (range 1 (inc count))]
-                (update-in point [axis] (partial f i))))))
+  (into #{}
+    (let [[dir count] (parse-direction command)
+          [f axis] (case dir "R" [+ :x]
+                             "L" [- :x]
+                             "U" [+ :y]
+                             "D" [- :y])]
+      (for [i (range 1 (inc count))]
+        (update-in point [axis] #(f % i))))))
 
 (defn run-commands [commands]
   (loop [p origin
@@ -42,4 +43,5 @@
 (def wire2 (run-commands wire2-directions))
 (def crosspoints (intersection wire1 wire2))
 
-(println (second (sort-by #(manhattan-distance % origin) < crosspoints)))
+(manhattan-distance origin
+                    (first (sort-by #(manhattan-distance % origin) crosspoints)))
