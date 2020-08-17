@@ -1,7 +1,7 @@
 (ns day5
   (:require [clojure.string :refer [split]]))
 
-(def input (doall (into '[] (map read-string (split (slurp "input/5.txt") #",")))))
+(def input (into '[] (map read-string (split (slurp "input/5.txt") #","))))
 
 (defn parse-opcode [s]
   (let [s (str "0000" s) ; pad instruction set for implied 0s
